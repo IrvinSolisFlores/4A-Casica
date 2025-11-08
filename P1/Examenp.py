@@ -1,0 +1,112 @@
+class Libro:
+    def __init__(self, titulo, autor, año, codigo, disponible=True):
+        self.titulo = titulo
+        self.autor = autor
+        self.año = año
+        self.codigo = codigo
+        self.disponible = disponible
+
+    def mostrar_info(self):
+        estado = "Disponible" if self.disponible else "No disponible"
+        print(f"{self.titulo} ({self.año}) - {self.autor} - Código: {self.codigo} - Estado: {estado}")
+
+    def marcar_como_prestado(self):
+        if self.disponible:
+            self.disponible = False
+            print(f"El libro '{self.titulo}' ha sido marcado como prestado.")
+        else:
+            print(f"El libro '{self.titulo}' ya está prestado.")
+
+    def marcar_como_disponible(self):
+        self.disponible = True
+        print(f"El libro '{self.titulo}' ha sido devuelto y está disponible nuevamente.")
+
+
+class Usuario:
+    def __init__(self, nombre, id_usuario, correo):
+        self.nombre = nombre
+        self.id_usuario = id_usuario
+        self.correo = correo
+
+    def mostrar_info(self):
+        print(f"Usuario: {self.nombre} - ID: {self.id_usuario} - Correo: {self.correo}")
+
+    def solicitar_prestamo(self, libro):
+        if libro.disponible:
+            print(f"{self.nombre} ha solicitado el libro '{libro.titulo}'.")
+            libro.marcar_como_prestado()
+        else:
+            print(f"El libro '{libro.titulo}' no está disponible para préstamo.")
+
+
+class Estudiante(Usuario):
+    def __init__(self, nombre, id_usuario, correo, carrera, semestre):
+        super().__init__(nombre, id_usuario, correo)
+        self.carrera = carrera
+        self.semestre = semestre
+
+    def mostrar_info(self):
+        print(f"Estudiante: {self.nombre} - ID: {self.id_usuario} - Correo: {self.correo} - "
+              f"Carrera: {self.carrera} - Semestre: {self.semestre}")
+
+
+class Profesor(Usuario):
+    def __init__(self, nombre, id_usuario, correo, departamento, tipo_contrato):
+        super().__init__(nombre, id_usuario, correo)
+        self.departamento = departamento
+        self.tipo_contrato = tipo_contrato
+
+    def mostrar_info(self):
+        print(f"Profesor: {self.nombre} - ID: {self.id_usuario} - Correo: {self.correo} - "
+              f"Departamento: {self.departamento} - Contrato: {self.tipo_contrato}")
+
+
+class Prestamo:
+    def __init__(self, libro, usuario, fecha_prestamo, fecha_devolucion=None):
+        self.libro = libro
+        self.usuario = usuario
+        self.fecha_prestamo = fecha_prestamo
+        self.fecha_devolucion = fecha_devolucion
+
+    def registrar_prestamo(self):
+        print(f"Préstamo registrado: '{self.libro.titulo}' para {self.usuario.nombre} el {self.fecha_prestamo}.")
+        self.libro.marcar_como_prestado()
+
+    def devolver_libro(self, fecha_devolucion):
+        self.fecha_devolucion = fecha_devolucion
+        print(f"Libro '{self.libro.titulo}' devuelto por {self.usuario.nombre} el {self.fecha_devolucion}.")
+        self.libro.marcar_como_disponible()
+
+
+
+libro1 = Libro("Cien años de soledad", "Gabriel García Márquez", 1967, "L001")
+libro2 = Libro("1984", "George Orwell", 1949, "L002")
+
+usuario1 = Usuario("Laura Gómez", "214313424524", "laura@gmail.com")
+estudiante1 = Estudiante("Carlos Pérez", "23452454524", "carlos@gmail.com", "Ingeniería", 5)
+profesor1 = Profesor("Dr. Luis Martínez", "234234234", "luis@gmail.com", "Matemáticas", "Tiempo completo")
+
+print("\nInformación de Usuarios")
+for usuario in [usuario1, estudiante1, profesor1]:
+    usuario.mostrar_info()
+
+
+print("\nCatálogo de Libros")
+libro1.mostrar_info()
+libro2.mostrar_info()
+
+print("\nSimulación de préstamo")
+prestamo1 = Prestamo(libro1, estudiante1, "2025-10-07")
+prestamo1.registrar_prestamo()
+
+
+profesor1.solicitar_prestamo(libro1)
+
+
+print("\nDevolución del libro")
+prestamo1.devolver_libro("2025-10-15")
+
+
+print("\nEstado final de libros")
+libro1.mostrar_info()
+libro2.mostrar_info()

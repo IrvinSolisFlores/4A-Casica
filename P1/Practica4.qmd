@@ -1,0 +1,121 @@
+---
+title: "Informe Reproducible actividad 1"
+author: "Irvin Alfonso Solis Flores"
+date: today
+lang: es
+format:
+  pdf:
+    toc: true
+    toc-depth: 4
+---
+
+# Definición de Clases
+Generar las clases que se nos pidieron en clase
+
+```{python}
+
+class Ticket:
+    def __init__(self, id, tipo, prioridad):
+        self.id = id
+        self.tipo = tipo
+        self.prioridad = prioridad
+        self.estado = "Pendiente"
+
+class empleado:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        
+    def trabajar_en_ticket(self, Ticket):
+        print(f"El empleado {self.nombre} revisa el ticket {Ticket.id}")
+
+class desarollador(empleado):
+    def trabajar_en_ticket(self, Ticket):
+        if Ticket.tipo.lower() == "software":
+            Ticket.estado = "Resuelto"
+            print(f"El desarrollador {self.nombre} ha resuelto el ticket {Ticket.id}")
+        else:
+            print(f"El desarrollador {self.nombre} no puede trabajar en el ticket {Ticket.id} de tipo {Ticket.tipo}") 
+
+class tester(empleado):
+    def trabajar_en_ticket(self, Ticket):
+        if Ticket.tipo.lower() == "prueba":
+            Ticket.estado = "Resuelto"
+            print(f"El tester {self.nombre} ha resuelto el ticket {Ticket.id}")
+        else:
+            print(f"El tester {self.nombre} no puede trabajar en el ticket {Ticket.id} de tipo {Ticket.tipo}") 
+
+class projectmanager(empleado):
+    def asignar_ticket(self, ticket, empleado):
+        print(f"{self.nombre} asignó el ticket {ticket.id} al empleado {empleado.nombre}")
+        empleado.trabajar_en_ticket(ticket)
+
+```
+
+# Crear empleados y Las listas
+como las listras se ban a crear desde 0 no les daremos un valor pre definido sinembaro no es lo mismo con los empleados a los que si tenemos definidos y les daremos un valor constatnte
+```{python}
+# Crear empleados
+developer1 = desarollador("Carlitos")
+tester1 = tester("Juanillo")
+pm = projectmanager("Juanote")
+
+tickets = []
+empleados = [developer1, tester1, pm]
+
+```
+# Actividad
+Aqui simplemente integre un menu interactivo utilisando todo lo que nos pidio prto lo tube que afaptar a qmd
+```{python}
+acciones = [
+    ("1", {"id": 1, "tipo": "software", "prioridad": "alta"}),  # Crear ticket
+    ("2", {}),  # Ver tickets
+    ("3", {"ticket_id": 1, "empleado": "carlitos"}),  # Asignar ticket
+    ("5", {}),  # Ver empleados
+    ("6", {})   # Salir
+]
+
+for opcion, datos in acciones:
+    print("\n--- Menú ---")
+    print("1. Crear ticket")
+    print("2. Ver tickets")
+    print("3. Asignar ticket")
+    print("4. Guardar tickets en archivo")
+    print("5. Ver empleados")
+    print("6. Salir")
+
+    print(f"\n>> Seleccionaste opción {opcion}")
+    
+    if opcion == "1":
+        nuevo_ticket = Ticket(datos["id"], datos["tipo"], datos["prioridad"])
+        tickets.append(nuevo_ticket)
+        print(f"Ticket {nuevo_ticket.id} creado.")
+
+    elif opcion == "2":
+        if not tickets:
+            print("No hay tickets registrados.")
+        else:
+            for t in tickets:
+                print(f"ID: {t.id}, Tipo: {t.tipo}, Prioridad: {t.prioridad}, Estado: {t.estado}")
+
+    elif opcion == "3":
+        ticket_id = datos["ticket_id"]
+        empleado_nombre = datos["empleado"].lower()
+
+        ticket_encontrado = next((t for t in tickets if t.id == ticket_id), None)
+        empleado_encontrado = next((e for e in empleados if e.nombre.lower() == empleado_nombre), None)
+
+        if ticket_encontrado and empleado_encontrado:
+            pm.asignar_ticket(ticket_encontrado, empleado_encontrado)
+        else:
+            print("Error: Ticket o empleado no encontrado.")
+
+    elif opcion == "5":
+        print("Lista de empleados:")
+        for e in empleados:
+            print(f"- {e.nombre} ({e.__class__.__name__})")
+
+    elif opcion == "6":
+        print("Saliendo del sistema...")
+        break
+
+```

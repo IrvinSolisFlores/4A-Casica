@@ -1,0 +1,56 @@
+---
+    title: "Informe Reproducible actividad 1"
+    date: today 
+
+    author: "Autor: Irvin Alfonso Solis Flores"
+
+    format:
+        pdf:
+            toc: true
+            toc-depth: 4
+    editor:
+        output: console
+    lang: es
+---
+
+# Classes, objetos, metodos y atributos
+Aqui lo que se nos enseño en la clase fue sobre los atributos publicos y privados y su importancia en la crogramacion orienteda a objetos e imprementamos lo que se nos mostro anteriormente 
+```{python}
+#Practiva2: Classes, objetos, metodos y atributos
+class persona:
+    def __init__(self, nombre, apellido, edad):#Constructor de la clase
+        #Creacion de atributos 
+        self.nombre = nombre
+        self.apellido = apellido
+        self.edad = edad
+        self.__cuenta = None
+        
+        #aTRIBUTOS PRIBADOS
+    def asignarcuenta(self, cuenta):
+        self.__cuenta = cuenta
+        print(f"{self.nombre} ahora tiene una cuenta")
+
+    def presentarse (self):
+        print(f"Hola mi nombre es {self.nombre}, mi apellido es {self.apellido}, y tengo {self.edad} años")
+    
+    def cumplir_años(self):
+        self.edad += 1
+        print(f"Esta persona cumplió años y ahora tiene {self.edad} años")
+
+    def consulatarsaldo(self):
+        if self.__cuenta:
+            print(f"El saldo de {self.nombre} es ${self.__cuenta.mostrarsaldo()}")#saldo
+        else:
+            print(f"{self.nombre} Aun no tiene una cuenta creada")
+
+
+estudiante1 = persona("Irvin","Solis",19)
+estudiante2 = persona("MArtin","Martines",19)
+estudiante3 = persona("yuri","yuridia",18)
+estudiante1.presentarse()
+estudiante1.cumplir_años
+
+
+```
+
+

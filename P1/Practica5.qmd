@@ -1,0 +1,44 @@
+---
+title: "Informe Reproducible actividad 1"
+author: "Irvin Alfonso Solis Flores"
+date: today
+lang: es
+format:
+  pdf:
+    toc: true
+    toc-depth: 4
+---
+
+# 1. ¿Qué pasaría si eliminamos la verificación if cls.instancia is None en el método __new_?
+la instancia no se crearia de ninguna manera ya que no se estaria inicialisando ninguna instancia
+```{python}
+class logger:
+    #Atributo de clase para guardar una instancia
+    __instance = None
+    #El metodo __new__ controla la creacion del objeto antes de init asegura que solo exista una sola instancia
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+            cls.__instance.archivo = open("app.log","a")
+        return cls.__instance #Devuelve siempre ala misma Instancia
+    def registro(self, mensaje):
+        self.archivo.write(mensaje)
+        self.archivo.flush()#Forza al archivo para guardarse en el disco
+        
+
+registro1=logger()#Creamos la unica instancia
+registro2=logger()#Devuelve la misma instancia sin crear una nueva
+
+registro1.registro("Inicio de sesion en la aplicacion")
+registro2.registro("El usuario se autoentifico")
+
+print(registro1,registro2)
+
+```
+
+
+# ⁠En la línea print(registro1 is registro2). ¿Qué significa que devuelva True en el contexto del Singleton?
+Segun silgenton creo yo que es la verificacion de que solo una variable 
+
+# ⁠¿Crees que siempre es buena idea usar Singleton para todo lo que es global? Da un ejemplo donde no sería recomendable.
+No creo que sea recomendable usar silgenton siempre sinembargo es una buena herramienta 
